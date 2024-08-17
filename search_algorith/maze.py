@@ -132,7 +132,34 @@ class Maze():
         frontier.add(start)
 
         # Initialize an empty explored set
-        
+        self.explored = set()
+
+        # Keep looping until solution found
+        while True:
+
+            # If nothing left in frontier then no path
+            if frontier.empty():
+                return Exception("no solution")
+            
+            # Choose a node from the frontier
+            node = frontier.remove()
+            self.num_explored += 1
+
+            # if node is the goal, then we have a solution
+            if node.state == self.goal:
+                actions = []
+                cells = []
+                
+            # Follow parent nodes to find a solution
+            while node.parent is not None:
+                actions.append(node.action)
+                cells.append(node.state)
+                node = node.parent
+            
+            actions.reverse()
+            cells.reverse()
+
+
 
 
 
