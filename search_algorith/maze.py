@@ -96,7 +96,44 @@ class Maze():
                     print(" ", end="")
             print()
         print()
-                        
+
+
+    def neighbors(self, state):
+        row, col = state
+
+        # All possible actions
+        candidates = [
+            ("up", (row - 1, col)),
+            ("down", (row + 1, col)),
+            ("left", (row, col - 1)),
+            ("right", (row, col + 1)),
+        ]   
+
+        # Ensure actios are valid
+        result = []
+        for action, (r, c) in candidates:
+            try:
+                if not self.walls[r][c]:
+                    result.append((action, (r, c)))
+            except IndexError:
+                continue
+
+        return result
+    
+    def solve(self):
+        """Finds a solution to maze, if one exists."""
+
+        # Kepp track of number of states explored
+        self.num_explored = 0
+
+        # initialize frontier to just the starting position
+        start = Node(state=self.parent, parent=None, action=None)
+        frontier = StackFrontier()
+        frontier.add(start)
+
+        # Initialize an empty explored set
+        
+
 
 
 
