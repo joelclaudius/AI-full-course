@@ -158,6 +158,19 @@ class Maze():
             
             actions.reverse()
             cells.reverse()
+            self.solution = (actions, cells)
+            return  
+            
+        self.explored.add(node.state)
+
+            # Mark node as explored
+        
+
+        # Add neighbors to the frontier
+        for action, state in self.neighbors(node.state):
+            if not frontier.contains_state(state) and state not in self.explored:
+                child = Node(state=state, parent=node, action=action)
+                frontier.add(child)
 
 
 
