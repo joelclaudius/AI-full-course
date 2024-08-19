@@ -12,21 +12,40 @@ CKnave = Symbol("C is a Knave")
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    # TODO
+    # A can either be a Knight or a knave, but not both
+    Or(AKnight, AKnave),
+
+    # If A is a Knight, then the statement "I am both a Knight and a knave" must be true
+    Implication(AKnight, And(AKnight, AKnave)),
+
+    # If A is a knave, then the statement "I am neither a Knight nor a knave" must be false
+    Implication(AKnave, Not(And(AKnight, AKnave)))
 )
 
 # Puzzle 1
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    # TODO
+    # A can either be a knight or a knave, but not both
+    Or(AKnight, AKnave),
+
+    # B can either be a knight or a knave, but not both.
+    Or(BKnight, BKnave),
+
+    # If A is a knight, then the statement "We are both knaves" should be true.
+    Implication(AKnight, And(AKnave, BKnave)),
+
+    # If A is a knave, then the statement "We are both knaves" should be false.
+    Implication(AKnave, Not(And(AKnave, BKnave))),
+
+
 )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    # T
 )
 
 # Puzzle 3
