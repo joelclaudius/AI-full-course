@@ -60,7 +60,7 @@ class Symbol(Sentence):
         try:
             return bool(model[self.name])
         except KeyError:
-            raise EvaluationException(f"variable {self.name} not in model")
+            raise Exception(f"variable {self.name} not in model")
 
     def formula(self):
         return self.name
@@ -87,7 +87,7 @@ class Not(Sentence):
         return not self.operand.evaluate(model)
 
     def formula(self):
-        return "Â¬" + Sentence.parenthesize(self.operand.formula())
+        return "¬" + Sentence.parenthesize(self.operand.formula())
 
     def symbols(self):
         return self.operand.symbols()
@@ -123,7 +123,7 @@ class And(Sentence):
     def formula(self):
         if len(self.conjuncts) == 1:
             return self.conjuncts[0].formula()
-        return " âˆ§ ".join([Sentence.parenthesize(conjunct.formula())
+        return " ∧ ".join([Sentence.parenthesize(conjunct.formula())
                            for conjunct in self.conjuncts])
 
     def symbols(self):
@@ -154,7 +154,7 @@ class Or(Sentence):
     def formula(self):
         if len(self.disjuncts) == 1:
             return self.disjuncts[0].formula()
-        return " âˆ¨  ".join([Sentence.parenthesize(disjunct.formula())
+        return " ∨  ".join([Sentence.parenthesize(disjunct.formula())
                             for disjunct in self.disjuncts])
 
     def symbols(self):

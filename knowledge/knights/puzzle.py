@@ -45,7 +45,13 @@ knowledge1 = And(
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # T
+    # A says "We are the same kind"
+    Biconditional(AKnight, Biconditional(AKnight, BKnight)),   # A is a knight and A and B are the same kind
+    Biconditional(AKnave, Not(Biconditional(AKnight, BKnight))),  # A is a knave and A and B are different kinds
+
+    # B says "We are of different kinds"
+    Implication(BKnight, Not(Biconditional(AKnight, BKnight))),  # B is a knight and A and B are different kinds
+    Implication(BKnave, Biconditional(AKnight, BKnight))   
 )
 
 # Puzzle 3
@@ -54,7 +60,26 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    # A says either "I am a knight" or "I am a knave"
+    Or(
+        Biconditional(AKnight, AKnight),  # If A is a knight, A says "I am a knight" is true
+        Biconditional(AKnave, AKnave)     # If A is a knave, A says "I am a knave" is true
+    ),
+    And(
+        Not(And(AKnight, AKnave))  # A cannot be both a knight and a knave
+    ),
+    
+    # B says "A said 'I am a knave'."
+    Implication(BKnight, Biconditional(AKnave, AKnave)),  # If B is a knight, B says "A said 'I am a knave'"
+    Implication(BKnave, Not(Biconditional(AKnave, AKnave))),  # If B is a knave, B is lying about A's statement
+
+    # B says "C is a knave."
+    Implication(BKnight, CKnave),  # If B is a knight, C is a knave
+    Implication(BKnave, CKnight),  # If B is a knave, C is a knight
+
+    # C says "A is a knight."
+    Implication(CKnight, AKnight),  # If C is a knight, A is a knight
+    Implication(CKnave, Not(AKnight))  # If C is a knave, A is not a knight
 )
 
 
