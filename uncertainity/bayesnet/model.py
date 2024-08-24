@@ -1,14 +1,16 @@
-from pomegranate import *
+from pomegranate.distributions import DiscreteDistribution
+from pomegranate.distributions import ConditionalProbabilityTable
+from pomegranate import BayesianNetwork, State
 
 # Rain node has no parents
-rain = Node(DiscreteDistribution({
+rain = State(DiscreteDistribution({
     "none": 0.7,
     "light": 0.2,
     "heavy": 0.1
 }), name="rain")
 
 # Track maintenance node is conditional on rain
-maintenance = Node(ConditionalProbabilityTable([
+maintenance = State(ConditionalProbabilityTable([
     ["none", "yes", 0.4],
     ["none", "no", 0.6],
     ["light", "yes", 0.2],
@@ -18,7 +20,7 @@ maintenance = Node(ConditionalProbabilityTable([
 ], [rain.distribution]), name="maintenance")
 
 # Train node is conditional on rain and maintenance
-train = Node(ConditionalProbabilityTable([
+train = State(ConditionalProbabilityTable([
     ["none", "yes", "on time", 0.8],
     ["none", "yes", "delayed", 0.2],
     ["none", "no", "on time", 0.9],
@@ -34,7 +36,7 @@ train = Node(ConditionalProbabilityTable([
 ], [rain.distribution, maintenance.distribution]), name="train")
 
 # Appointment node is conditional on train
-appointment = Node(ConditionalProbabilityTable([
+appointment = State(ConditionalProbabilityTable([
     ["on time", "attend", 0.9],
     ["on time", "miss", 0.1],
     ["delayed", "attend", 0.6],
@@ -42,7 +44,7 @@ appointment = Node(ConditionalProbabilityTable([
 ], [train.distribution]), name="appointment")
 
 # Create a Bayesian Network and add states
-model = BayesianNetwork()
+model = BayesianNetwork("Rain Model")
 model.add_states(rain, maintenance, train, appointment)
 
 # Add edges connecting nodes
